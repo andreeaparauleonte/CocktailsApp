@@ -1,0 +1,31 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: lightgray;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+.App-header table{
+width:100%;
+background-color:lightcoral;
+margin:0;
+}
+.App-header td{
+  border:1px solid darkred;
+  padding:5px;
+}
+.App-search input {
+  width: 400px;
+  background-color: lightcoral;
+  border-radius: 5px;
+  border: 1px solid darkred;
+  padding:5px;
+  margin: 10px;
+  font-size: 14px;
+}
