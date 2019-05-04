@@ -1,8 +1,65 @@
-import React from 'react';
+import React,{Component} from 'react';
 import './App.css';
 import Category from './components/Category';
-function App() {
-  return (
+import CocktailView from './components/CocktailView';
+import CocktailDetails from './components/CocktailDetails';
+
+
+class App extends Component {
+  state = {
+        categories:[
+          {id: 1, name: "Alcoholic", filterBy : "Alcoholic", filterType : "a"},
+          {id: 2, name: "Non Alcoholic", filterBy : "Non_Alcoholic", filterType : "a"},
+          {id: 3, name: "Ordinary Drink", filterBy : "Ordinary_Drink", filterType : "c"},
+          {id: 4, name: "Cocktail glass", filterBy : "Cocktail_glass", filterType : "g"},
+          {id: 5, name: "Champagne flute", filterBy : "Champagne_flute", filterType : "g"},
+        ],
+        selectedItem : null,
+        viewCocktail : false,
+        showDetails : false
+  }
+
+  onPictureClick = (cocktail) => {
+    this.setState({
+        selectedItem : cocktail,
+        viewCocktail : true,
+        showDetails : false
+    });
+  }
+
+  cancelViewCocktail = () =>{
+    this.setState({
+      selectedItem : null,
+      viewCocktail : false
+    });
+    window.scrollTo(0, 0);
+  }
+
+  onTitleClick = (cocktail) => {  
+    this.setState({
+        selectedItem : cocktail,
+        showDetails : true
+    });
+    window.scrollTo(0, 0);
+  }
+
+  cancelDetailsCocktail = () =>{
+    this.setState({
+      selectedItem : null,
+      showDetails : false
+    });
+  }
+
+  render() {
+    let categories = this.state.categories.map((category, index) => 
+      {return <Category {...category} 
+                        key={category.id} 
+                        hide={this.state.viewCocktail} 
+                        onPictureClick={this.onPictureClick} 
+                        onTitleClick={this.onTitleClick}/>
+      });
+
+    return(
     <div className="App">
       <header className="App-header">
         <h1>Cocktails</h1>
@@ -17,16 +74,21 @@ function App() {
           </table>
       </header>
       <div className="App-search">
-        <input type="text" value="Search by name" />
+        <input type="text" defaultValue="Search by name" />
       </div>
 
-      <Category filterType="a" filterBy="Alcoholic" categoryName="Alcoholic" />
-      <Category filterType="a" filterBy="Non_Alcoholic" categoryName="Non Alcoholic" />
-      <Category filterType="c" filterBy="Ordinary_Drink" categoryName="Ordinary Drink" />
-      <Category filterType="g" filterBy="Cocktail_glass" categoryName="Cocktail glass" />
-      <Category filterType="g" filterBy="Champagne_flute" categoryName="Champagne flute" />
+      {(this.state.showDetails && this.state.selectedItem!=null) && 
+        <CocktailDetails {...this.state.selectedItem} cancelDetailsCocktail={this.cancelDetailsCocktail} />
+      }
+      {categories}
+      {
+        (this.state.viewCocktail && this.state.selectedItem!=null) &&
+        <CocktailView {...this.state.selectedItem} cancelViewCocktail={this.cancelViewCocktail}/>
+      }
+      <div className="footer"></div>
     </div>
-  );
+    )
+  }
 }
 
 export default App;

@@ -8,26 +8,37 @@ class Category extends Component {
         cocktails: []
     }
 
-    constructor(props){
-        super(props);
-    }
-
     componentDidMount(){
-        console.log(this.props.categoryName);
         let url = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?' + this.props.filterType + '=' + this.props.filterBy;
         axios.get(url).then(response => {
-            console.log(response);
             this.setState({cocktails : response.data.drinks })
-        }
-            );
+            }
+        );
+    }
+
+    handlePictureClick = (cocktail, e) => {
+        this.props.onPictureClick(cocktail);
+    }
+    handleTitleClick = (cocktail, e) => {
+        this.props.onTitleClick(cocktail);
     }
 
     render(){
-        let cocktails = this.state.cocktails.map((cocktail, index) => {return <Cocktail {...cocktail} key={cocktail.idDrink}/>});
+        let cocktails = this.state.cocktails.map(
+            (cocktail, index) => 
+            {return <Cocktail {...cocktail} 
+                        key={cocktail.idDrink} 
+                        cocktail={cocktail} 
+                        onPictureClick={this.handlePictureClick.bind(this,cocktail)}
+                        onTitleClick={this.handleTitleClick.bind(this, cocktail)}/>
+        });
+        
+        let classNameContainer = this.props.hide? "categoryContainer hidden" : "categoryContainer";
+        
         return (
-        <div className="categoryContainer">
+        <div className={classNameContainer}>
             <div className="categoryTitle">
-              {this.props.categoryName}  
+              {this.props.name}  
             </div>
             {cocktails}
         </div>

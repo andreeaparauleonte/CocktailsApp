@@ -1,9 +1,9 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 
 const Cocktail = (props)=>{
     return <div className="cocktailItem">
-        <img src={props.strDrinkThumb} />
-        <h4>{props.strDrink}</h4>
+        <img src={props.strDrinkThumb} onClick={props.onPictureClick} alt={props.strDrink}/>
+        <h4 onClick={props.onTitleClick}>{props.strDrink}</h4>
        
     </div>;
 }
